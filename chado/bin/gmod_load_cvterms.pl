@@ -63,6 +63,10 @@ hostname for database [required if -p isn't used]
 
 database name [required if -p isn't used]
 
+=item -P 
+
+database port
+
 =item -p 
 
 password (if you need to provide a password to connect to your db)
@@ -159,13 +163,14 @@ use Bio::Chado::Schema;
 use Try::Tiny;
 
 our ($opt_d, $opt_h, $opt_H, $opt_F, $opt_n, $opt_D, $opt_v, $opt_t, 
-     $opt_u, $opt_o, $opt_p, $opt_r, $opt_g, $opt_s);
+     $opt_u, $opt_o, $opt_p, $opt_P, $opt_r, $opt_g, $opt_s);
 
 getopts('F:d:H:o:n:vD:tp:us:r:g:')
     or pod2usage();
 
 my $dbhost = $opt_H;
 my $dbname = $opt_D;
+my $dbport = $opt_P;
 my $pass = $opt_p;
 my $driver = $opt_d;
 my $user = $opt_r;
@@ -189,7 +194,7 @@ if (!($opt_H and $opt_D) ) {
     $driver ||= $db_conf->driver();
     
 
-    $port= $db_conf->port() || '5432';
+    $port= $db_conf->port() || $opt_P || '5432';
     
     $user= $db_conf->user();
     $pass= $db_conf->password();
